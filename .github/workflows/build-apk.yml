@@ -1,11 +1,11 @@
-name: Build Android APK with Expo
+name: Build Android APK
 on:
   push:
     branches: [ main, master ]
   workflow_dispatch:
 
 jobs:
-  build-android:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,23 +23,17 @@ jobs:
       - name: Install dependencies
         run: npm install
         
-      - name: Generate native Android project
-        run: npx expo prebuild --platform android --clean --non-interactive
-          
-      - name: Create JavaScript bundle
+      - name: Generate assets and bundle
         run: |
-          npx react-native bundle \
-            --platform android \
-            --dev false \
-            --entry-file index.js \
-            --bundle-output android/app/src/main/assets/index.android.bundle \
-            --assets-dest android/app/src/main/res/
+          npx expo export --platform android
+          mkdir -p android/app/src/main/assets
+          cp dist/bundles/* android/app/src/main/assets/
           
-      - name: Build Android Debug APK
+      - name: Build Android APK
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon
+          ./gradlew assembleDebug
           
       - name: Upload APK
         uses: actions/upload-artifact@v4
