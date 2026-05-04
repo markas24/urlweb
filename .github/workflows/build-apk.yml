@@ -23,13 +23,20 @@ jobs:
       - name: Install dependencies
         run: npm install
         
-      - name: Generate assets and bundle
-        run: |
-          npx expo export --platform android
-          mkdir -p android/app/src/main/assets
-          cp dist/bundles/* android/app/src/main/assets/
+      - name: Generate Android project
+        run: npx expo prebuild --platform android --clean
           
-      - name: Build Android APK
+      - name: Create assets folder and bundle
+        run: |
+          mkdir -p android/app/src/main/assets
+          npx react-native bundle \
+            --platform android \
+            --dev false \
+            --entry-file index.js \
+            --bundle-output android/app/src/main/assets/index.android.bundle \
+            --assets-dest android/app/src/main/res
+          
+      - name: Build APK with Gradle
         run: |
           cd android
           chmod +x gradlew
