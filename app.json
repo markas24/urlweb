@@ -11,13 +11,23 @@
       "resizeMode": "contain",
       "backgroundColor": "#1a1a2e"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "android": {
       "package": "com.markas24.urlweb",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1a1a2e"
       }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "20b481c9-5105-49ef-a01e-abd71f8e622e"
+      }
+    },
+    "ios": {
+      "bundleIdentifier": "com.markas24.urlweb"
     }
   }
 }
