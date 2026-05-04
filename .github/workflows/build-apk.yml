@@ -22,10 +22,13 @@ jobs:
           
       - name: Install dependencies
         run: npm ci
+        
+      # Étape cruciale : Génère les dossiers android/ et ios/ si absents
+      - name: Prebuild native project
+        run: npx expo prebuild --platform android --clean
           
-      - name: Build Android APK via Expo
+      - name: Build Android APK (Debug)
         run: |
-          npx expo prebuild --platform android --clean
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug
